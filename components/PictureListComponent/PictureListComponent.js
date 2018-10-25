@@ -102,7 +102,8 @@ export default class PictureListComponent extends Component {
                             }}
                             useForeground={true}
                         >
-                            <ImageZoom cropWidth={Dimensions.get('window').width}
+                            <ImageZoom
+                            cropWidth={Dimensions.get('window').width}
                             cropHeight={Dimensions.get('window').height}
                             imageWidth={Dimensions.get('window').width}
                             imageHeight={Dimensions.get('window').height}
