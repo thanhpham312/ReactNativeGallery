@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { FlatList, TouchableNativeFeedback, Image, View, Modal, ActivityIndicator, Alert } from 'react-native';
 import PictureListStyle from './PictureListStyle';
+import ImageZoom from 'react-native-image-pan-zoom';
+import Dimensions from 'Dimensions';
 
 
 export default class PictureListComponent extends Component {
@@ -100,11 +102,20 @@ export default class PictureListComponent extends Component {
                             }}
                             useForeground={true}
                         >
-                            <Image style={PictureListStyle.PictureLarge}
-                                source={{
-                                    uri: this.state.currentPictureURI
-                                }}
-                            />
+                            <ImageZoom cropWidth={Dimensions.get('window').width}
+                            cropHeight={Dimensions.get('window').height}
+                            imageWidth={Dimensions.get('window').width}
+                            imageHeight={Dimensions.get('window').height}
+                            onClick={() => {
+                                this.setModalVisible(false);
+                            }}
+                            >
+                                <Image style={PictureListStyle.PictureLarge}
+                                    source={{
+                                        uri: this.state.currentPictureURI
+                                    }}
+                                />
+                            </ImageZoom>
                         </TouchableNativeFeedback>
                     </View>
                 </Modal>
