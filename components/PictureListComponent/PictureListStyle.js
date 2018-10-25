@@ -19,7 +19,6 @@ const PictureListStyle = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     borderRadius: 10,
-    elevation: 5
   },
   PictureModalWrapper: {
     position: 'absolute',
