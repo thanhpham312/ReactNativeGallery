@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, TouchableNativeFeedback, Image, View, Modal, ActivityIndicator } from 'react-native';
+import { FlatList, TouchableNativeFeedback, Image, View, Modal, ActivityIndicator, Alert } from 'react-native';
 import PictureListStyle from './PictureListStyle';
 
 
@@ -84,7 +84,7 @@ export default class PictureListComponent extends Component {
                     transparent={true}
                     visible={this.state.modalVisible}
                     onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
+                        this.setModalVisible(false);
                     }}>
                     <View style={PictureListStyle.PictureModalWrapper}>
                         <View style={PictureListStyle.PictureModalBackground}>
