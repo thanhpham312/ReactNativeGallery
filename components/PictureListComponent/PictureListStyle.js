@@ -17,8 +17,38 @@ const PictureListStyle = StyleSheet.create({
     width: null,
     height: null,
     flex: 1,
-    resizeMode: "stretch",
+    resizeMode: "cover",
     borderRadius: 10,
+    elevation: 5
+  },
+  PictureModalWrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+    flexDirection: 'column',
+    alignContent: 'center',
+  },
+  PictureModalBackground: {
+    position: 'absolute',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+    top: 0,
+    left: 0,
+    backgroundColor: 'black',
+    opacity: 0.8,
+    flexDirection: 'column',
+    alignContent: 'center',
+  },
+  PictureLargeSctivityIndicator: {
+    flex: 1,
+  },
+  PictureLarge: {
+    width: null,
+    height: null,
+    flex: 1,
+    resizeMode: "contain",
   }
 });
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, TouchableNativeFeedback, Image, View, Modal } from 'react-native';
+import { FlatList, TouchableNativeFeedback, Image, View, Modal, ActivityIndicator } from 'react-native';
 import PictureListStyle from './PictureListStyle';
 
 
@@ -9,25 +9,28 @@ export default class PictureListComponent extends Component {
         super();
 
         this.state = {
-            searchKeyword: 'dog',
-            todoDataSource: []
+            searchKeyword: 'landscape',
+            todoDataSource: [],
+            modalVisible: false,
+            currentPictureURI: ''
         }
 
         this.pressItem = this.pressItem.bind(this);
         this.renderItem = this.renderItem.bind(this);
         this.changeSearchKeyword = this.changeSearchKeyword.bind(this);
+        this.setModalVisible = this.setModalVisible.bind(this);
     }
 
     async changeSearchKeyword(keyword) {
         await this.setState({
-            searchKeyword: keyword
+            searchKeyword: keyword,
         })
         this.fetchPictures();
     }
 
     fetchPictures() {
         console.log(this.state.searchKeyword)
-        fetch("http://pixabay.com/api/?key=10372347-f91eea3b443f6c19e7a9a11b4&q=" + this.state.searchKeyword + "&image_type=photo&per_page=50")
+        fetch("http://pixabay.com/api/?key=10372347-f91eea3b443f6c19e7a9a11b4&q=" + this.state.searchKeyword + "&image_type=photo&per_page=200")
         .then((response) => response.json())
         .then((response) => {
             console.log(response.hits)
@@ -37,21 +40,28 @@ export default class PictureListComponent extends Component {
         })
     }
 
+    setModalVisible(visible) {
+        this.setState({modalVisible: visible});
+    }
+
     componentDidMount(){
         this.fetchPictures();
     }
 
-    pressItem(itemID){
-        console.log('Row number ' + itemID);
+    async pressItem(largeImageURL){
+        await this.setState({
+            currentPictureURI: largeImageURL
+        });
+        console.log(this.state.currentPictureURI)
+        this.setModalVisible(true);
     }
 
     renderItem({item}) {
         return(
                 <TouchableNativeFeedback
                     onPress={()=>{
-                        this.pressItem(item.id);
+                        this.pressItem(item.largeImageURL);
                     }}
-                    
                     useForeground={true}
                 >
                     <View style={PictureListStyle.PictureWrapper}>
@@ -69,6 +79,36 @@ export default class PictureListComponent extends Component {
     render() {
         return (
             <View style={PictureListStyle.PictureListMainView}>
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={this.state.modalVisible}
+                    onRequestClose={() => {
+                        Alert.alert('Modal has been closed.');
+                    }}>
+                    <View style={PictureListStyle.PictureModalWrapper}>
+                        <View style={PictureListStyle.PictureModalBackground}>
+                            <ActivityIndicator
+                                style={PictureListStyle.PictureLargeSctivityIndicator}
+                                size="large"
+                                color="#1565C0"
+                            />
+                        </View>
+                        <TouchableNativeFeedback
+                            onPress={() => {
+                                this.setModalVisible(false);
+                            }}
+                            useForeground={true}
+                        >
+                            <Image style={PictureListStyle.PictureLarge}
+                                source={{
+                                    uri: this.state.currentPictureURI
+                                }}
+                            />
+                        </TouchableNativeFeedback>
+                    </View>
+                </Modal>
+
                 <FlatList
                     contentContainerStyle={PictureListStyle.PictureList}
                     data={this.state.todoDataSource}
